@@ -5,7 +5,64 @@ EXPOSE 80
 
 RUN    apt update
 RUN    apt upgrade -y
-RUN    apt -y install nodejs npm autoconf automake build-essential cmake doxygen git graphviz imagemagick libasound2-dev libass-dev libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavutil-dev libfreetype6-dev libgmp-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libopus-dev librtmp-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev libsdl2-ttf-dev libsnappy-dev libsoxr-dev libssh-dev libssl-dev libtool libv4l-dev libva-dev libvdpau-dev libvo-amrwbenc-dev libvorbis-dev libwebp-dev libx264-dev libx265-dev libxcb-shape0-dev libxcb-shm0-dev libxcb-xfixes0-dev libxcb1-dev libxml2-dev lzma-dev meson nasm pkg-config python3-dev python3-pip texinfo wget yasm zlib1g-dev libdrm-dev
+RUN    apt -y install nodejs \
+npm \
+autoconf \
+automake \
+build-essential \
+cmake \
+doxygen \
+git \
+graphviz imagemagick \
+libasound2-dev \
+libass-dev \
+libavcodec-dev \
+libavdevice-dev \
+libavfilter-dev \
+libavformat-dev \
+libavutil-dev \
+libfreetype6-dev \
+libgmp-dev \
+libmp3lame-dev \
+libopencore-amrnb-dev \
+libopus-dev \
+librtmp-dev  \
+libsdl2-dev \
+libsdl2-image-dev \
+libsdl2-mixer-dev  \
+libsdl2-net-dev \
+libsdl2-ttf-dev \
+libsnappy-dev  \
+libsoxr-dev \
+libssh-dev \
+libssl-dev \
+libtool  \
+libv4l-dev \
+libva-dev \
+libvdpau-dev \
+libvo-amrwbenc-dev \
+libvorbis-dev \
+libwebp-dev \
+libx264-dev \
+libx265-dev \
+libxcb-shape0-dev \
+libxcb-shm0-dev \
+libxcb-xfixes0-dev \
+libxcb1-dev libxml2-dev \
+lzma-dev \
+meson \
+nasm \
+pkg-config \
+python3-dev \
+python3-pip \
+texinfo \
+wget \
+yasm \
+zlib1g-dev \
+libdrm-dev \
+libunistring-dev \
+libaom-dev \
+libdav1d-dev
 
 RUN    mkdir ~/ffmpeg-libraries
 
@@ -39,12 +96,6 @@ RUN  cd ~/ffmpeg-libraries/zimg \
   && make \
   && make install
 
-RUN  mkdir ~/ffmpeg-libraries/aom/aom_build \
-  && cd ~/ffmpeg-libraries/aom/aom_build \
-  && cmake -G "Unix Makefiles" AOM_SRC -DENABLE_NASM=on -DPYTHON_EXECUTABLE="$(which python3)" .. \
-  && make -j$(nproc) \
-  && sudo make install
-
 RUN    ldconfig
 
 RUN  cd ~/FFmpeg \
@@ -52,7 +103,7 @@ RUN  cd ~/FFmpeg \
     --extra-cflags="-I/usr/local/include" \
     --extra-ldflags="-L/usr/local/lib" \
     --extra-libs="-lpthread -lm -latomic" \
-    --arch=armel   \
+    --arch=amd64   \
     --enable-gmp \
     --enable-gpl \
     --enable-libaom \
@@ -63,7 +114,7 @@ RUN  cd ~/FFmpeg \
     --enable-libkvazaar \
     --enable-libmp3lame \
     --enable-libopencore-amrnb \
-    --enable-libopencore-amrwb \
+# --enable-libopencore-amrwb \
     --enable-libopus \
     --enable-librtmp \
     --enable-libsnappy \
@@ -82,9 +133,9 @@ RUN  cd ~/FFmpeg \
     --enable-pthreads \
     --enable-openssl \
     --enable-hardcoded-tables \
-    --enable-mmal \
+    # --enable-mmal \
+    --enable-libdav1d \
   && make -j$(nproc) \
   && make install
 
-ENTRYPOINT [ "/entrypoint.sh" ]
-
+# ENTRYPOINT [ "/entrypoint.sh" ]
